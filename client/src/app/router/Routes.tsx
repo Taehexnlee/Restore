@@ -8,7 +8,8 @@ import ContactPage from "../../features/contact/ContactPage";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import BasketPage from "../../features/basket/BasketPage";
-import CheckoutPage from "../../features/Checkout/checkoutPage";
+import CheckoutPage from "../../features/Checkout/CheckoutPage";
+
 
 export const router = createBrowserRouter([
     {

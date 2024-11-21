@@ -1,30 +1,27 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Product } from '../../app/model/product';
-import agent from '../../app/api/agent';
 import NotFound from '../../app/errors/NotFound';
 import LoadingComponent from '../../app/layout/LoadingComponent';
-import { useStoreContext } from '../../app/context/StoreContext';
 import { LoadingButton } from '@mui/lab';
+import {  addBasketItemAsync, removeBasketItemAsync } from '../basket/basketSlice';
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
+import { useSelector } from 'react-redux';
+import { fetchProductAsync, productSelectors } from './catalogSlice';
 
 export default function ProductDetails() {
-  const {basket, setBasket} =useStoreContext();
+  const {basket, status} =useAppSelector(state => state.basket);
+  const dispatch = useAppDispatch()
   const {id} = useParams<{id:string}>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const product = useSelector(state => productSelectors.selectById(state, id))
+  const {status: productStatus} = useAppSelector(state => state.Catalog)
   const [quantity, setQauntity] = useState(0);
-  const [submitting, setSubmitting] =useState(false);
   const item = basket?.items.find(i => i.productId===product?.id);
 
   useEffect(() => {
     if(item) setQauntity(item.quantity);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    id && agent.Catalog.details(parseInt(id))
-    .then(response => setProduct(response))
-    .catch(error => console.log(error))
-    .finally(()=> setLoading(false))
-  },[id, item]);
+    if(!product) dispatch(fetchProductAsync(parseInt(id)))
+  },[id, item, dispatch, product]);
 
   function handelInputChange(event: ChangeEvent<HTMLInputElement>)
   {
@@ -37,26 +34,18 @@ export default function ProductDetails() {
 
   function handelUpdateCart()
   {
-    if(!product) return;
-    setSubmitting(true);
     if(!item || quantity >item.quantity)
     {
       const updateQuantity =item ? quantity -item.quantity : quantity;
-      agent.Basket.addItem(product.id, updateQuantity)
-          .then(basket => setBasket(basket))
-          .catch(error => console.log(error))
-          .finally(()=> setSubmitting(false))
+      dispatch(addBasketItemAsync({productId: product?.id!,quantity: updateQuantity}))
     }else
     {
       const updatedQuantity = item.quantity - quantity;
-      agent.Basket.removeItem(product.id, updatedQuantity)
-          .then(()=> removeItem(product.id, quantity))
-          .catch(error => console.log(error))
-          .finally(() => setSubmitting(false));
+      dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
     }
   }
 
-  if (loading) return <LoadingComponent message='Loading product...'/>
+  if (productStatus.includes('pending')) return <LoadingComponent message='Loading product...'/>
 
   if(!product) return <NotFound/>
   return (
@@ -113,7 +102,7 @@ export default function ProductDetails() {
         <Grid item xs={6}>
           <LoadingButton
             disabled ={item?.quantity === quantity || !item && quantity === 0}
-            loading = {submitting}
+            loading = {status.includes('pending' + item?.productId)}
             onClick={handelUpdateCart}
             sx={{height:'55px'}}
             color='primary'
