@@ -1,17 +1,16 @@
 using API.Entities;
-using Microsoft.EntityFrameworkCore;
 
-namespace API.Data
+namespace API.Data;
+
+public static class DbInitializer
 {
-    public static class Dbinitializer
+    public static void Initialize(StoreContext context)
     {
-        public static void Initialize(StoreContext context)    
-        {
-            if (context.Products.Any())return;
+        if (context.Products.Any()) return;
 
-            var products = new List<Product>
+        var products = new List<Product>
             {
-                		new Product
+                new Product
                 {
                     Name = "Angular Speedster Board 2000",
                     Description =
@@ -20,7 +19,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-ang1.png",
                     Brand = "Angular",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -30,7 +29,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-ang2.png",
                     Brand = "Angular",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -41,7 +40,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-core1.png",
                     Brand = "NetCore",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -52,7 +51,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-core2.png",
                     Brand = "NetCore",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -63,7 +62,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-react1.png",
                     Brand = "React",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -74,7 +73,7 @@ namespace API.Data
                     PictureUrl = "/images/products/sb-ts1.png",
                     Brand = "TypeScript",
                     Type = "Boards",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -85,7 +84,7 @@ namespace API.Data
                     PictureUrl = "/images/products/hat-core1.png",
                     Brand = "NetCore",
                     Type = "Hats",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -96,7 +95,7 @@ namespace API.Data
                     PictureUrl = "/images/products/hat-react1.png",
                     Brand = "React",
                     Type = "Hats",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -107,7 +106,7 @@ namespace API.Data
                     PictureUrl = "/images/products/hat-react2.png",
                     Brand = "React",
                     Type = "Hats",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -118,7 +117,7 @@ namespace API.Data
                     PictureUrl = "/images/products/glove-code1.png",
                     Brand = "VS Code",
                     Type = "Gloves",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -129,7 +128,7 @@ namespace API.Data
                     PictureUrl = "/images/products/glove-code2.png",
                     Brand = "VS Code",
                     Type = "Gloves",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -140,7 +139,7 @@ namespace API.Data
                     PictureUrl = "/images/products/glove-react1.png",
                     Brand = "React",
                     Type = "Gloves",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -151,7 +150,7 @@ namespace API.Data
                     PictureUrl = "/images/products/glove-react2.png",
                     Brand = "React",
                     Type = "Gloves",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -162,7 +161,7 @@ namespace API.Data
                     PictureUrl = "/images/products/boot-redis1.png",
                     Brand = "Redis",
                     Type = "Boots",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -171,9 +170,9 @@ namespace API.Data
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
                     Price = 18999,
                     PictureUrl = "/images/products/boot-core2.png",
-                    Brand = "NetCore",
+                    Brand = "Redis",
                     Type = "Boots",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -184,7 +183,7 @@ namespace API.Data
                     PictureUrl = "/images/products/boot-core1.png",
                     Brand = "NetCore",
                     Type = "Boots",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -194,7 +193,7 @@ namespace API.Data
                     PictureUrl = "/images/products/boot-ang2.png",
                     Brand = "Angular",
                     Type = "Boots",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
                 new Product
                 {
@@ -205,15 +204,15 @@ namespace API.Data
                     PictureUrl = "/images/products/boot-ang1.png",
                     Brand = "Angular",
                     Type = "Boots",
-                    Quantity = 100
+                    QuantityInStock = 100
                 },
             };
-            foreach (var product in products)
-            {
-                context.Products.Add(product);
-            }
-            context.SaveChanges();
+
+        foreach (var product in products)
+        {
+            context.Products.Add(product);
         }
 
+        context.SaveChanges();
     }
 }

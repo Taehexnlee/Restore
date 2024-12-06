@@ -1,21 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
-
-export interface CounterState{
-    data : number;
+interface CounterState {
     title: string;
+    data: number;
 }
-const initialState: CounterState ={
-    data : 42,
-    title : 'YARC (yet another redux counter with redux toolkit )'
+
+const initialState: CounterState = {
+    title: 'Redux with redux toolkit example',
+    data: 42
 }
 
 export const counterSlice = createSlice({
-    name : 'counter',
+    name: 'counter',
     initialState,
-    reducers:{
+    reducers: {
         increment: (state, action) => {
-            state.data += action.payload
+            state.data += action.payload;
         },
         decrement: (state, action) => {
             state.data -= action.payload
